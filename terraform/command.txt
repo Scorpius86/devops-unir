@@ -1,0 +1,5 @@
+#root access
+sudo su -
+
+#install
+sudo dnf install mc
