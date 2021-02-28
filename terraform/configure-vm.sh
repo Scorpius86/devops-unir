@@ -113,3 +113,10 @@ k8s-c8-master ansible_user=root
 k8s-c8-node01 ansible_user=root
 k8s-c8-node02 ansible_user=root
 ' >> /etc/ansible/hosts"
+
+echo $promnt'======================================================'
+echo $promnt'Get repo for ansible...'
+echo $promnt'======================================================'
+
+echo $promnt'Clone Repo'
+Sudo git clone https://github.com/Scorpius86/devops-unir.git
