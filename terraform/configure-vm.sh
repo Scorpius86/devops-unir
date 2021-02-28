@@ -24,8 +24,10 @@ sudo sed -i s/=enforcing/=disabled/g /etc/selinux/config
 
 echo $prompt'Install nfs dependencies'
 sudo dnf install nfs-utils nfs4-acl-tools wget -y
-
 sudo yum install dnf-plugins-core -y
+
+echo $prompt'Install Git'
+sudo yum install git -y
 
 echo $prompt'======================================================'
 echo $prompt'Setting Machine' $hostname
