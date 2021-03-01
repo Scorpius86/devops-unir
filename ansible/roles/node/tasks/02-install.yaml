@@ -1,0 +1,4 @@
+---
+######################################### Cross ########################################
+- name: Load result kubeadm init
+  debug: msg="the value of foo.txt is {{ kubeadm_init }}"

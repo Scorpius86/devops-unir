@@ -1,0 +1,27 @@
+---
+
+- name: Configure firewall - Enable ports
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes  
+  with_items:
+    - 8285/udp
+    - 8472/udp
+
+- name: Configure firewall - Zone public
+  firewalld:
+    zone: public
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes   
+  with_items:
+    - 10250/tcp
+    - 30000-32767/udp
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded
