@@ -97,11 +97,13 @@
   shell: df -hP
 
 - name: Configure access to the NFS share
-  shell: "cat << EOF > /etc/exports 
-/srv/nfs    192.168.1.110(rw,sync)
-/srv/nfs    192.168.1.111(rw,sync)
-/srv/nfs    192.168.1.112(rw,sync)
-EOF"
+  template:
+    src: exports.j2
+    dest: /etc/exports
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
   
 - name: Lets reread the file | exportfs -r
   shell: exportfs -r
