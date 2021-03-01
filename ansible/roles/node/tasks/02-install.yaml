@@ -6,4 +6,4 @@
   delegate_to: localhost
 
 - name: Join node
-  shell: {{kubeadm_join_cmd.stdout}}
+  shell: "{{kubeadm_join_cmd.stdout}} --ignore-preflight-errors=swap"
