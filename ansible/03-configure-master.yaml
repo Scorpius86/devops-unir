@@ -1,0 +1,9 @@
+---
+
+- name: Configure Master
+  hosts: master
+  vars_files:
+    - "group_vars/naster.yaml"
+  gather_facts: true
+  roles:
+    - master

@@ -1,0 +1,40 @@
+---
+######################################### Cross ########################################
+- name: Configure kudeadm
+  shell: kubeadm config images pull
+
+- name: Install CNI (Container Network Interface)
+  shell: kubeadm init --pod-network-cidr 10.0.0.0/16
+
+- name: Authorize root
+  shell: |
+    mkdir -p /root/.kube
+    cp -i /etc/kubernetes/admin.conf /root/.kube/config
+    chown $(id -u):$(id -g) /root/.kube/config
+
+- name: Install SDN (Calico)
+  shell: |
+    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+    wget https://docs.projectcalico.org/manifests/custom-resources.yaml
+    sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/16' custom-resources.yaml
+    kubectl apply -f custom-resources.yaml
+
+- name: Install SDN en Azure (Calico)
+  shell: |
+    wget https://docs.projectcalico.org/manifests/canal.yaml
+    sed -i '/CALICO_IPV4POOL_CIDR/c\            - name: CALICO_IPV4POOL_CIDR' canal.yaml
+    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/16"' canal.yaml
+    kubectl apply -f canal.yaml
+
+- name: Install MetalLB
+  shell: |
+    kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
+    kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl apply -f - -n kube-system
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
+    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+    kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+    kubectl apply -f metalLB.yaml
+
+- name: Deploy Ingress Controller
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml

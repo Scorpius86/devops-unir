@@ -1,0 +1,40 @@
+---
+
+- name: Configure firewall - Enable ports
+  firewalld:
+    port: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes  
+  with_items:
+    - 6443/tcp
+    - 2379-2380/tcp
+    - 10250/tcp
+    - 10251/tcp
+    - 10252/tcp
+    - 10255/tcp
+    - 8285/udp
+    - 8472/udp
+
+- name: Configure firewall - Allow access nodes
+  firewalld:
+    rich_rule: "{{ item }}"
+    permanent: yes
+    state: enabled
+    immediate: yes  
+  with_items:
+    - rule family=ipv4 source address=192.168.1.111/32 accept
+    - rule family=ipv4 source address=192.168.1.112/32 accept
+
+- name: Configure firewall - Allow access nodes - Zone public
+  firewalld:
+    zone: public
+    rich_rule: "rule family=ipv4 source address=172.17.0.0/16 accept"
+    permanent: yes
+    state: enabled
+    immediate: yes   
+
+- name: Reload service firewalld
+  systemd:
+    name: firewalld
+    state: reloaded

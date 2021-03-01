@@ -8,9 +8,6 @@
 - name: Set firewalld masquerade rules between cluster nodes
   shell: firewall-cmd --add-masquerade --permanent  
 
-- name: Reload firewall
-  shell: firewall-cmd --reload
-
 - name: Enable firewall - VXLAN
   template:
     src: k8s-conf.j2
