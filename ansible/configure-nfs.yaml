@@ -1,0 +1,9 @@
+---
+
+- name: configure nfs
+  hosts: k8s-c7-nfs
+  vars_files:
+    - "group_vars/nfs.yaml"
+  gather_facts: true
+  roles:
+    - nfs

@@ -1,0 +1,2 @@
+#ansible-playbook -i hosts -l haproxy deploy-haproxy.yaml
+ansible-playbook -l nfs configure-nfs.yaml

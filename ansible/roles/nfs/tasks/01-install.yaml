@@ -1,0 +1,110 @@
+---
+######################################## Red Hat ########################################
+- name: Install epel-release (Red Hat)
+  dnf:
+    name: "{{ epel_release_rpms }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Install cloud-utils-growpart.x86_64 (Red Hat)
+  dnf:
+    name: "{{ cloud_utils_growpart_x86_64_rpms }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Install nfs-utils (Red Hat)
+  dnf:
+    name: "{{ nfs_utils_rpms }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Install net-tools (Red Hat)
+  dnf:
+    name: "{{ net_tools_rpms }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat'
+######################################### Debian ########################################
+- name: Install epel-release (Debian)
+  apt:
+    name: "{{ epel_release_debs }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: install cloud-utils-growpart.x86_64 (Debian)
+  apt:
+    name: "{{ cloud_utils_growpart_x86_64_debs }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install nfs-utils (Debian)
+  dnf:
+    name: "{{ nfs_utils_debs }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install net-tools (Debian)
+  dnf:
+    name: "{{ net_tools_debs }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian'
+######################################### Cross ########################################
+- name: Identifying the data disk
+  shell: lsblk
+
+- name: Create physical volume
+  shell: pvcreate /dev/sdb
+  ignore_errors: yes
+
+- name: Create volume group
+  shell: vgcreate data_vg /dev/sdb    
+  ignore_errors: yes
+
+- name: Check volume group
+  shell: vgdisplay data_vg
+
+- name: Create Logical volume
+  lvol:
+    vg: data_vg
+    lv: nfs_lv
+    size: 9.9g
+
+- name: Check Logical volume
+  shell: lvs
+
+- name: Create the filesystem of type XFS
+  filesystem:
+    fstype: xfs
+    dev: /dev/data_vg/nfs_lv
+
+- name: Create mount point
+  shell: mkdir /srv/nfs
+
+- name: Write mount point
+  shell: echo "/dev/data_vg/nfs_lv        /srv/nfs                xfs     defaults        0 0" >> /etc/fstab
+
+- name: Check mount
+  shell: mount -a
+
+- name: Check mount df
+  shell: df -hP
+
+- name: Configure access to the NFS share
+  shell: "cat << EOF > /etc/exports 
+/srv/nfs    192.168.1.110(rw,sync)
+/srv/nfs    192.168.1.111(rw,sync)
+/srv/nfs    192.168.1.112(rw,sync)
+EOF"
+  
+- name: Lets reread the file | exportfs -r
+  shell: exportfs -r
+
+- name: Lets reread the file | exportfs -s
+  shell: exportfs -s

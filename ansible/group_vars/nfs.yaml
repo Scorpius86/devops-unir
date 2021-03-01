@@ -1,0 +1,14 @@
+---
+
+epel_release_rpms: ['epel-release']
+nfs_utils_rpms: ['nfs-utils']
+net_tools_rpms: ['net-tools']
+cloud_utils_growpart_x86_64_rpms: ['cloud-utils-growpart.x86_64']
+
+epel_release_debs: ['epel-release']
+nfs_utils_debs: ['nfs-utils']
+net_tools_debs: ['net-tools']
+cloud_utils_growpart_x86_64_debs: ['cloud-utils-growpart.x86_64']
+
+apache1_ip: '192.168.1.141'
+apache2_ip: '192.168.1.142'
