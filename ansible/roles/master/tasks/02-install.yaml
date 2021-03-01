@@ -5,6 +5,8 @@
 
 - name: Install CNI (Container Network Interface)
   shell: kubeadm init --pod-network-cidr 10.0.0.0/16
+  register: kubeadm_init
+  local_action: copy content={{ kubeadm_init.stdout  }} dest="kubeadm_init.txt"
 
 - name: Authorize root
   shell: |
