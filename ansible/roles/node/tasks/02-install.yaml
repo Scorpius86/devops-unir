@@ -1,4 +1,8 @@
 ---
 ######################################### Cross ########################################
 - name: Load result kubeadm init
-  debug: msg="the value of foo.txt is {{ kubeadm_init }}"
+  shell: tail -n 2 ansible/roles/node/files/kubeadm_init.txt
+  register: kubeadm_init
+
+- name: Join Node
+  shell: {{kubeadm_init}}

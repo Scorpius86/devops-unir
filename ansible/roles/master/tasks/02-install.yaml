@@ -4,13 +4,17 @@
   shell: kubeadm config images pull
 
 - name: Install CNI (Container Network Interface)
-  shell: kubeadm init --pod-network-cidr 10.0.0.0/16
-  register: kubeadm_init
+  shell: kubeadm init --pod-network-cidr 10.0.0.0/16  
   
+- name: Generate join token
+  shell: kubeadm token create --print-join-command
+  register: kubeadm_join_cmd
+  delegate_to: localhost
+
 - name: copy the output to a local file
   copy:
-    content: "{{ kubeadm_init.stdout }}"
-    dest: "roles/node/files/kubeadm_init.txt"
+    content: "{{ kubeadm_join_cmd.stdout }}"
+    dest: "roles/node/files/kubeadm_join_cmd.txt"
   delegate_to: localhost
 
 - name: Authorize root
