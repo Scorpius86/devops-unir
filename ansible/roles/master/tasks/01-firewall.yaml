@@ -26,7 +26,7 @@
     - rule family=ipv4 source address=10.0.1.11/16 accept
     - rule family=ipv4 source address=10.0.1.12/16 accept
 
-- name: Configure firewall - Allow access nodes - Zone public
+- name: Configure firewall - Allow access nodes - Public zone
   firewalld:
     zone: public
     rich_rule: "rule family=ipv4 source address=172.17.0.0/16 accept"
