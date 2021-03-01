@@ -5,6 +5,6 @@
   register: kubeadm_join_cmd
   delegate_to: localhost
 
-- debug: var=kubeadm_join_cmd
+- debug: var=kubeadm_join_cmd.stdout
 - debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
 - debug: var=ansible_eth0.ipv4.address
