@@ -1,0 +1,9 @@
+---
+
+- name: Configure Cluster
+  hosts: cluster
+  vars_files:
+    - "group_vars/cluster.yaml"
+  gather_facts: true
+  roles:
+    - cluster
