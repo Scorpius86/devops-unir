@@ -1,7 +1,9 @@
 ---
 ######################################### Cross ########################################
-- name: Load result kubeadm init
-  shell: cat roles/node/files/kubeadm_join_cmd.txt | sed -e "s/10.0.1.10/{{ansible_eth0.ipv4.address}}/"
+- name: Load result kubeadm join
+  shell: cat roles/node/files/kubeadm_join_cmd.txt | sed -e "s/10.0.1.10/{{hostvars[inventory_hostname]['ansible_default_ipv4']['address']}}/"
   register: kubeadm_join_cmd
 
 - debug: var=kubeadm_join_cmd.stdout
+- debug: var=hostvars[inventory_hostname]['ansible_default_ipv4']['address']
+- debug: var=ansible_eth0.ipv4.address
