@@ -11,8 +11,7 @@
   shell: |
     kubeadm token create --print-join-command
   register: kubeadm_join_cmd
-  delegate_to: localhost
-
+  
 - name: copy the output to a local file
   copy:
     content: "{{ kubeadm_join_cmd.stdout }}"
