@@ -1,0 +1,98 @@
+---
+######################################### Cross ########################################
+- name: Enable transparent masquerading (VXLAN.)
+  modprobe:
+    name: br_netfilter
+    state: present
+
+- name: Set firewalld masquerade rules between cluster nodes
+  shell: firewall-cmd --add-masquerade --permanent  
+
+- name: Reload firewall
+  shell: firewall-cmd --reload
+
+- name: Enable firewall - VXLAN
+  template:
+    src: k8s-conf.j2
+    dest: /etc/sysctl.d/k8s.conf
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+- name: Enable VXLAN
+  shell: sysctl --system
+
+- name: Check Swap
+  shell: free -m
+
+- name: Inactive swap
+  shell: |
+    swapoff  -a
+    free -m
+
+- name: Disable swap boot
+  shell: |
+    cat /etc/fstab
+    sed -i '/swap/d' /etc/fstab
+    cat /etc/fstab
+
+- name: Install config-manager
+  shell: dnf config-manager --add-repo=https://download.docker.com/linux/centos/docker-ce.repo
+
+- name: Install Kubernetes - Configure Repo
+  template:
+    src: kubernetes_repo.j2
+    dest: /etc/yum.repos.d/kubernetes.repo
+    owner: root
+    group: root
+    mode: 0644
+  become: yes
+
+######################################## Red Hat ########################################
+- name: Install docker-ce (Red Hat)
+  dnf:
+    name: "{{ docker_ce_rpms }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'RedHat'
+
+- name: Install these packages - kubelet kubeadm kubectl
+  yum:
+    name: "{{ packages }}"
+    state: present
+    disable_excludes: all
+    exclude: kubernetes
+  vars:
+    packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+  become: yes
+  become_user: root
+  when: ansible_os_family == 'RedHat'
+######################################### Debian ########################################
+- name: Install docker-ce (Debian)
+  dnf:
+    name: "{{ docker_ce_debs }}"
+    state: present
+  become: yes
+  when: ansible_os_family == 'Debian'
+
+- name: Install these packages - kubelet kubeadm kubectl
+  yum:
+    name: "{{ packages }}"
+    state: present
+    disable_excludes: all
+    exclude: kubernetes
+  vars:
+    packages:
+      - kubelet
+      - kubeadm
+      - kubectl
+  become: yes
+  become_user: root
+  when: ansible_os_family == 'Debian'
+
+
+  

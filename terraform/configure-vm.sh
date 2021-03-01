@@ -114,6 +114,11 @@ k8s-c8-master ansible_user=root
 [node]
 k8s-c8-node01 ansible_user=root
 k8s-c8-node02 ansible_user=root
+
+[cluster]
+k8s-c8-master ansible_user=root
+k8s-c8-node01 ansible_user=root
+k8s-c8-node02 ansible_user=root
 ' >> /etc/ansible/hosts"
 
 echo $prompt'======================================================'
@@ -128,7 +133,7 @@ echo $prompt'Install and enable Firewall...'
 echo $prompt'======================================================'
 
 echo $prompt'Install firewalld'
-sudo dnf install firewalld
+sudo dnf install firewalld -y
 
 echo $prompt'Enable firewalld'
 sudo systemctl enable firewalld

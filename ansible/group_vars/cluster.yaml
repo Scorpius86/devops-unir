@@ -1,0 +1,7 @@
+---
+
+docker_ce_rpms: ['docker-ce']
+containerd_io_rpms: ['containerd.io']
+
+docker_ce_debs: ['docker-ce']
+containerd_io_debs: ['containerd.io']

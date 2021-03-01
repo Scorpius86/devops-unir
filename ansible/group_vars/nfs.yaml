@@ -9,6 +9,3 @@ epel_release_debs: ['epel-release']
 nfs_utils_debs: ['nfs-utils']
 net_tools_debs: ['net-tools']
 cloud_utils_growpart_debs: ['cloud-utils-growpart']
-
-apache1_ip: '192.168.1.141'
-apache2_ip: '192.168.1.142'
