@@ -3,7 +3,7 @@
 epel_release_rpms: ['epel-release']
 nfs_utils_rpms: ['nfs-utils']
 net_tools_rpms: ['net-tools']
-cloud_utils_growpart_x86_64_rpms: ['cloud-utils-growpart.x86_64']
+cloud_utils_growpart_x86_64_rpms: ['cloud-utils-growpart']
 
 epel_release_debs: ['epel-release']
 nfs_utils_debs: ['nfs-utils']

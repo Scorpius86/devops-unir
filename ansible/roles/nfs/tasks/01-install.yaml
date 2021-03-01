@@ -7,9 +7,9 @@
   become: yes
   when: ansible_os_family == 'RedHat'
 
-- name: Install cloud-utils-growpart.x86_64 (Red Hat)
+- name: Install cloud-utils-growpart (Red Hat)
   dnf:
-    name: "{{ cloud_utils_growpart_x86_64_rpms }}"
+    name: "{{ cloud_utils_growpart_rpms }}"
     state: present
   become: yes
   when: ansible_os_family == 'RedHat'
@@ -35,9 +35,9 @@
   become: yes
   when: ansible_os_family == 'Debian'
 
-- name: install cloud-utils-growpart.x86_64 (Debian)
+- name: install cloud-utils-growpart (Debian)
   apt:
-    name: "{{ cloud_utils_growpart_x86_64_debs }}"
+    name: "{{ cloud_utils_growpart_debs }}"
     state: present
   become: yes
   when: ansible_os_family == 'Debian'
