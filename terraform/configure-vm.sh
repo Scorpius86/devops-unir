@@ -121,4 +121,4 @@ echo $prompt'Get repo for ansible...'
 echo $prompt'======================================================'
 
 echo $prompt'Clone Repo'
-sudo git clone https://github.com/Scorpius86/devops-unir.git
+git clone https://github.com/Scorpius86/devops-unir.git
