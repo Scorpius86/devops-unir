@@ -122,3 +122,19 @@ echo $prompt'======================================================'
 
 echo $prompt'Clone Repo'
 git clone https://github.com/Scorpius86/devops-unir.git
+
+echo $prompt'======================================================'
+echo $prompt'Install and enable Firewall...'
+echo $prompt'======================================================'
+
+echo $prompt'Install firewalld'
+sudo dnf install firewalld
+
+echo $prompt'Enable firewalld'
+sudo systemctl enable firewalld
+
+echo $prompt'Start firewalld'
+sudo systemctl start firewalld
+
+echo $prompt'Check firewalld'
+sudo firewall-cmd --state
