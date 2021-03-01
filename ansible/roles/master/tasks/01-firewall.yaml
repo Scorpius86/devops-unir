@@ -23,8 +23,8 @@
     state: enabled
     immediate: yes  
   with_items:
-    - rule family=ipv4 source address=10.0.1.11/32 accept
-    - rule family=ipv4 source address=10.0.1.12/32 accept
+    - rule family=ipv4 source address=10.0.1.11/16 accept
+    - rule family=ipv4 source address=10.0.1.12/16 accept
 
 - name: Configure firewall - Allow access nodes - Zone public
   firewalld:
