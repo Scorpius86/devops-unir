@@ -26,6 +26,17 @@
     sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/16"' canal.yaml
     kubectl apply -f canal.yaml
 
+- name: Copy metalLB.yaml
+  copy:
+    src: "{{ item }}"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0644    
+  become: yes  
+  with_items:
+      - "metalLB.yaml"
+
 - name: Install MetalLB
   shell: |
     kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
