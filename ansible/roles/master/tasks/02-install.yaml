@@ -4,7 +4,7 @@
   shell: kubeadm config images pull
 
 - name: Install CNI (Container Network Interface)
-  shell: kubeadm init --pod-network-cidr 10.0.0.0/16
+  shell: kubeadm init --pod-network-cidr 10.0.0.0/24
     
 - name: Generate join token
   shell: |
@@ -27,14 +27,14 @@
   shell: |
     kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
     wget https://docs.projectcalico.org/manifests/custom-resources.yaml
-    sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/16' custom-resources.yaml
+    sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
     kubectl apply -f custom-resources.yaml
 
 - name: Install SDN en Azure (Calico)
   shell: |
     wget https://docs.projectcalico.org/manifests/canal.yaml
     sed -i '/CALICO_IPV4POOL_CIDR/c\            - name: CALICO_IPV4POOL_CIDR' canal.yaml
-    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/16"' canal.yaml
+    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/24"' canal.yaml
     kubectl apply -f canal.yaml
 
 - name: Copy metalLB.yaml
