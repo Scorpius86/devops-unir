@@ -1,0 +1,11 @@
+---
+
+- name: Configure Node
+  hosts: node
+  vars_files:
+    - "group_vars/master.yaml"
+  vars:
+    kubeadm_init: "{{ lookup('file', 'roles/node/files/kubeadm_init.txt') }}"
+  gather_facts: true
+  roles:
+    - node
