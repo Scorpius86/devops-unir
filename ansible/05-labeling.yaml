@@ -1,0 +1,9 @@
+---
+
+- name: Labelling nodes
+  hosts: master  
+  gather_facts: true  
+  shell : |
+    kubectl label node k8s-c8-node01 node-role.kubernetes.io/worker=worker
+    kubectl label node k8s-c8-node02 node-role.kubernetes.io/worker=worker
+  
