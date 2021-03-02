@@ -71,11 +71,11 @@
     kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 
 - name: Create Kubeadmin user
-    user:
-      name: kubeadmin
-      createhome: yes
-      home: /home/kubeadmin
-      password: "{{ 'P@ssword1234' | password_hash('sha512') }}"
+  user:
+    name: kubeadmin
+    createhome: yes
+    home: /home/kubeadmin
+    password: "{{ 'P@ssword1234' | password_hash('sha512') }}"
 
 - name: Configure Kubeadmin user
   shell: |
