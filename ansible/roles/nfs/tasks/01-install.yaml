@@ -60,11 +60,11 @@
   shell: lsblk
 
 - name: Create physical volume
-  shell: pvcreate /dev/sdb
+  shell: pvcreate /dev/sdc
   ignore_errors: yes
 
 - name: Create volume group
-  shell: vgcreate data_vg /dev/sdb
+  shell: vgcreate data_vg /dev/sdc
   ignore_errors: yes
 
 - name: Check volume group
