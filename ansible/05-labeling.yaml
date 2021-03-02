@@ -1,6 +1,6 @@
 ---
 
-- name: Labelling nodes
+- name: Labeling nodes
   hosts: master  
   gather_facts: true  
   shell : |
