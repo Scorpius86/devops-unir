@@ -6,7 +6,7 @@
 #  delegate_to: localhost
   
 - name: Load result kubeadm join
-  shell: cat roles/node/files/kubeadm_join_cmd.txt"
+  shell: cat roles/node/files/kubeadm_join_cmd.txt
   register: kubeadm_join_cmd
   delegate_to: localhost
 
