@@ -3,3 +3,8 @@ ansible-playbook -l nfs ansible/01-configure-nfs.yaml
 ansible-playbook -l cluster ansible/02-configure-cluster.yaml
 ansible-playbook -l master ansible/03-configure-master.yaml
 ansible-playbook -l node ansible/04-configure-node.yaml
+
+
+
+
+az vm open-port -g kubernetes_rg --name k8s-c8-master --port 32107

@@ -29,6 +29,9 @@ sudo yum install dnf-plugins-core -y
 echo $prompt'Install Git'
 sudo yum install git -y
 
+echo $prompt'Install mkpasswd'
+sudo yum install expect -y
+
 echo $prompt'======================================================'
 echo $prompt'Setting Machine' $hostname
 echo $prompt'======================================================'

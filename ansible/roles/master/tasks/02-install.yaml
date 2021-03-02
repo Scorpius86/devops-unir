@@ -52,6 +52,11 @@
   with_items:
       - "metalLB.yaml"
 
+- name: Labeling Workers
+  shell : |
+    kubectl label node k8s-c8-node01 node-role.kubernetes.io/worker=worker
+    kubectl label node k8s-c8-node02 node-role.kubernetes.io/worker=worker
+
 - name: Install MetalLB
   shell: |
     kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
@@ -64,3 +69,19 @@
 - name: Deploy Ingress Controller
   shell: |
     kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
+
+- name: Create Kubeadmin user
+    user:
+      name: kubeadmin
+      createhome: yes
+      home: /home/kubeadmin
+      password: "{{ 'P@ssword1234' | password_hash('sha512') }}"
+
+- name: Configure Kubeadmin user
+  shell: |
+    mkdir -p /home/kubeadmin/.kube
+    cp -i /etc/kubernetes/admin.conf /home/kubeadmin/.kube/config
+    chown kubeadmin. /home/kubeadmin/.kube/config
+    cat <<EOF > /etc/sudoers.d/kubeadmin
+    ALL            ALL = (ALL) NOPASSWD: ALL
+    EOF
