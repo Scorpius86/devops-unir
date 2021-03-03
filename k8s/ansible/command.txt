@@ -1,10 +1,10 @@
 #ansible-playbook -i hosts -l haproxy deploy-haproxy.yaml
-ansible-playbook -l all ansible/00-run-all.yaml
-ansible-playbook -l nfs ansible/01-configure-nfs.yaml
-ansible-playbook -l cluster ansible/02-configure-cluster.yaml
-ansible-playbook -l master ansible/03-configure-master.yaml
-ansible-playbook -l node ansible/04-configure-node.yaml
-ansible-playbook -l master ansible/05-labeling-addons.yaml
+ansible-playbook -l all k8s/ansible/00-run-all.yaml
+ansible-playbook -l nfs k8s/ansible/01-configure-nfs.yaml
+ansible-playbook -l cluster k8s/ansible/02-configure-cluster.yaml
+ansible-playbook -l master k8s/ansible/03-configure-master.yaml
+ansible-playbook -l node k8s/ansible/04-configure-node.yaml
+ansible-playbook -l master k8s/ansible/05-labeling-addons.yaml
 
 
 
@@ -19,3 +19,5 @@ kubectl get all -n nginx-ingress
 kubectl delete -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 kubectl apply -f haproxy-ingress.yaml
+
+git clone https://github.com/Scorpius86/devops-unir.git
