@@ -1,0 +1,34 @@
+---
+
+- name: Labeling & and Install AddOns
+  hosts: master  
+  gather_facts: true  
+  tasks:
+    - name: metalLB.yaml
+      copy:
+        src: "{{ item }}"
+        dest: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0644    
+      become: yes  
+      with_items:          
+          - "metalLB.yaml"
+    - name: Labeling nodes
+      shell : |
+        kubectl label node k8s-c8-node01 node-role.kubernetes.io/worker=worker
+        kubectl label node k8s-c8-node02 node-role.kubernetes.io/worker=worker
+
+    - name: Deploy Ingress Controller
+      shell: |
+        kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml        
+
+    - name: Install MetalLB
+      shell: |
+        kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
+        kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl apply -f - -n kube-system
+        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
+        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+        kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+        kubectl apply -f metalLB.yaml
+  
