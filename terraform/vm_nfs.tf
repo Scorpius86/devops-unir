@@ -31,6 +31,7 @@ resource "azurerm_virtual_machine" "vmNFS" {
         name = "${var.vm_nfs_config[count.index].name}_OSDisk"
         caching = "ReadWrite"
         create_option = "FromImage"
+        managed_disk_type = "${var.vm_nfs_config[count.index].osDisk.type}"
         #storage_account_type = "Standard_LRS"
     }
 

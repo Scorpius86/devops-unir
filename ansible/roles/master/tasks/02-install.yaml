@@ -36,9 +36,9 @@
       - "calico.yaml"
       - "metalLB.yaml"
 
-#- name: Install SDN (Local Calico)
-#  shell: |    
-#    kubectl apply -f calico.yaml
+- name: Install SDN (Local Calico)
+  shell: |    
+    kubectl apply -f calico.yaml
 
 #- name: Install SDN (Calico)
 #  shell: |    
@@ -47,12 +47,12 @@
 #   sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
 #   kubectl apply -f custom-resources.yaml
 
-- name: Install SDN en Azure (Calico)
-  shell: |
-    wget https://docs.projectcalico.org/manifests/canal.yaml
-    sed -i '/CALICO_IPV4POOL_CIDR/c\            - name: CALICO_IPV4POOL_CIDR' canal.yaml
-    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/24"' canal.yaml
-    kubectl apply -f canal.yaml
+#- name: Install SDN en Azure (Calico)
+#  shell: |
+#    wget https://docs.projectcalico.org/manifests/canal.yaml
+#   sed -i '/CALICO_IPV4POOL_CIDR/c\            - name: CALICO_IPV4POOL_CIDR' canal.yaml
+#    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/24"' canal.yaml
+#   kubectl apply -f canal.yaml
 
 #- name: Install SDN en Azure (Wave)
 #  shell: |
@@ -65,18 +65,18 @@
 #    sed -i '/cluster-pool-ipv4-cidr: "10.0.0.0\/8"/c\  cluster-pool-ipv4-cidr: "10.0.0.0\/24"' custom-resources.yaml
 #    kubectl apply -f quick-install.yaml
 
-- name: Install MetalLB
-  shell: |
-    kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
-    kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl apply -f - -n kube-system
-    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
-    kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
-    kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-    kubectl apply -f metalLB.yaml
+#- name: Install MetalLB
+#  shell: |
+#    kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
+#   kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl apply -f - -n kube-system
+#   kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
+#   kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+#   kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+#   kubectl apply -f metalLB.yaml
 
-- name: Deploy Ingress Controller
-  shell: |
-    kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
+#- name: Deploy Ingress Controller
+#  shell: |
+#   kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 #    kubectl delete -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 
 - name: Create Kubeadmin user

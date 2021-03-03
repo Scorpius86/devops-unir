@@ -1,4 +1,5 @@
 #ansible-playbook -i hosts -l haproxy deploy-haproxy.yaml
+ansible-playbook -l all ansible/00-run-all.yaml
 ansible-playbook -l nfs ansible/01-configure-nfs.yaml
 ansible-playbook -l cluster ansible/02-configure-cluster.yaml
 ansible-playbook -l master ansible/03-configure-master.yaml
