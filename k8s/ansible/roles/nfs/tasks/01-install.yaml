@@ -61,11 +61,11 @@
   register: dataDisk
 
 - name: Create physical volume
-  shell: pvcreate /dev/{{dataDisk}}
+  shell: "pvcreate /dev/{{dataDisk}}"
   ignore_errors: yes
 
 - name: Create volume group
-  shell: vgcreate data_vg /dev/{{dataDisk}}
+  shell: "vgcreate data_vg /dev/{{dataDisk}}"
   ignore_errors: yes
 
 - name: Check volume group
