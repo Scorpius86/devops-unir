@@ -20,7 +20,7 @@ variable "vm_size" {
   description = "Tamaño de la máquina virtual"
   #default     = "Standard_D1_v2" # 3.5 GB, 1 CPU 
   #default     = "Standard_B2s" # 4 GB, 2 CPU 
-  default     = "Standard_B2ms" # 8GB, 2 CPU, 
+  #default     = "Standard_B2ms" # 8GB, 2 CPU, 
   default     = "Standard_D2s_v3" # 8GB, 2 CPU,   
 }
 
