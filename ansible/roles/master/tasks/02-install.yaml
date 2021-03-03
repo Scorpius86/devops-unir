@@ -24,6 +24,22 @@
     cp -i /etc/kubernetes/admin.conf /root/.kube/config
     chown $(id -u):$(id -g) /root/.kube/config
 
+- name: Copy calico.yaml, metalLB.yaml
+  copy:
+    src: "{{ item }}"
+    dest: "{{ item }}"
+    owner: root
+    group: root
+    mode: 0644    
+  become: yes  
+  with_items:
+      - "calico.yaml"
+      - "metalLB.yaml"
+
+- name: Install SDN (Local Calico)
+  shell: |    
+    kubectl apply -f calico.yaml
+
 #- name: Install SDN (Calico)
 #  shell: |    
 #    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml          
@@ -48,17 +64,6 @@
 #    wget https://raw.githubusercontent.com/cilium/cilium/v1.9/install/kubernetes/quick-install.yaml
 #    sed -i '/cluster-pool-ipv4-cidr: "10.0.0.0\/8"/c\  cluster-pool-ipv4-cidr: "10.0.0.0\/24"' custom-resources.yaml
 #    kubectl apply -f quick-install.yaml
-
-- name: Copy metalLB.yaml
-  copy:
-    src: "{{ item }}"
-    dest: "{{ item }}"
-    owner: root
-    group: root
-    mode: 0644    
-  become: yes  
-  with_items:
-      - "metalLB.yaml"
 
 - name: Install MetalLB
   shell: |
