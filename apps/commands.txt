@@ -1,0 +1,16 @@
+git clone https://github.com/Scorpius86/devops-unir.git
+
+#ingress
+kubectl create namespace webapp-routed
+kubectl apply -f first-routed-webapp/first-routed-webapp.yaml
+kubectl apply -f first-routed-webapp/ingress.yaml
+kubectl apply -f first-routed-webapp/configmap.yaml
+
+kubectl get svc --namespace=haproxy-controller
+kubectl get ep --namespace=webapp-routed
+
+curl -I -H 'Host: foo.bar' 'http://<IP-MASTER>:<PORT-HAPROXY-INGRESS>/webapp'
+
+
+#Volume
+kubectl create namespace webapp-volumes
