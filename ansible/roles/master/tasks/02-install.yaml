@@ -26,28 +26,28 @@
 
 #- name: Install SDN (Calico)
 #  shell: |
-#    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+#    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml          
 #    wget https://docs.projectcalico.org/manifests/custom-resources.yaml
 #    sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
 #    kubectl apply -f custom-resources.yaml
 
-#- name: Install SDN en Azure (Calico)
-#  shell: |
-#    wget https://docs.projectcalico.org/manifests/canal.yaml
-#    sed -i '/CALICO_IPV4POOL_CIDR/c\            - name: CALICO_IPV4POOL_CIDR' canal.yaml
-#    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/24"' canal.yaml
-#    kubectl apply -f canal.yaml
+- name: Install SDN en Azure (Calico)
+  shell: |
+    wget https://docs.projectcalico.org/manifests/canal.yaml
+    sed -i '/CALICO_IPV4POOL_CIDR/c\            - name: CALICO_IPV4POOL_CIDR' canal.yaml
+    sed -i '/192.168.0.0\/16/c\              value: "10.0.0.0\/24"' canal.yaml
+    kubectl apply -f canal.yaml
 
 #- name: Install SDN en Azure (Wave)
 #  shell: |
 #    kubectl apply -f "https://cloud.weave.works/k8s/net?k8s-version=$(kubectl version | base64 | tr -d '\n')"
 
-- name: Install SDN en zure (cilium)
-  shell: |
-    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
-    wget https://raw.githubusercontent.com/cilium/cilium/v1.9/install/kubernetes/quick-install.yaml
-    sed -i '/cluster-pool-ipv4-cidr: "10.0.0.0\/8"/c\  cluster-pool-ipv4-cidr: "10.0.0.0\/24"' custom-resources.yaml
-    kubectl apply -f quick-install.yaml
+#- name: Install SDN en zure (cilium)
+#  shell: |
+#    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml
+#    wget https://raw.githubusercontent.com/cilium/cilium/v1.9/install/kubernetes/quick-install.yaml
+#    sed -i '/cluster-pool-ipv4-cidr: "10.0.0.0\/8"/c\  cluster-pool-ipv4-cidr: "10.0.0.0\/24"' custom-resources.yaml
+#    kubectl apply -f quick-install.yaml
 
 - name: Copy metalLB.yaml
   copy:
