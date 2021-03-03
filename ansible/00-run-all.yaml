@@ -1,0 +1,5 @@
+- import_playbook: 01-configure-nfs.yaml
+- import_playbook: 02-configure-cluster.yaml
+- import_playbook: 03-configure-master.yaml
+- import_playbook: 04-configure-node.yaml
+- import_playbook: 05-labeling.yaml
