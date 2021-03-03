@@ -35,16 +35,16 @@
   with_items:
       - "calico.yaml"      
 
-- name: Install SDN (Local Calico)
-  shell: |    
-    kubectl apply -f calico.yaml
-
-#- name: Install SDN (Calico)
+#- name: Install SDN (Local Calico)
 #  shell: |    
-#    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml          
-#    wget https://docs.projectcalico.org/manifests/custom-resources.yaml
-#   sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
-#   kubectl apply -f custom-resources.yaml
+#    kubectl apply -f calico.yaml
+
+- name: Install SDN (Calico)
+  shell: |    
+    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml          
+    wget https://docs.projectcalico.org/manifests/custom-resources.yaml
+    sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
+    kubectl apply -f custom-resources.yaml
 
 #- name: Install SDN en Azure (Calico)
 #  shell: |
