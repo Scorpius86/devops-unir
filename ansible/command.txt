@@ -9,3 +9,12 @@ ansible-playbook -l master ansible/05-labeling.yaml
 
 
 az vm open-port -g kubernetes_rg --name k8s-c8-master --port 32107
+
+
+kubectl create namespace nginx-ingress
+kubectl apply -f nginx-ingress.yaml
+kubectl get all -n nginx-ingress
+
+kubectl delete -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
+kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
+kubectl apply -f haproxy-ingress.yaml
