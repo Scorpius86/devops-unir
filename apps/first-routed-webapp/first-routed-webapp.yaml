@@ -36,6 +36,7 @@ metadata:
 spec:
     selector:
       app: webapp-routed
+    type: LoadBalancer
     ports:
     - name: http
       protocol: TCP

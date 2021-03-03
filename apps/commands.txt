@@ -14,3 +14,26 @@ curl -I -H 'Host: foo.bar' 'http://<IP-MASTER>:<PORT-HAPROXY-INGRESS>/webapp'
 
 #Volume
 kubectl create namespace webapp-volumes
+kubectl apply -f webapp-volumes/nfs-pvc.yaml
+kubectl apply -f webapp-volumes/webapp-volumes.yaml
+
+
+kubectl get pv --namespace=webapp-volumes
+kubectl describe pv --namespace=webapp-volumes
+kubectl get pvc --namespace=webapp-volumes
+kubectl exec --stdin --tty <POD-WEBAPPls> --namespace=webapp-volumes -- /bin/bash
+ls
+df
+exit
+Go to Server nfs
+Go to directory /srv/nfs
+Create file index.php
+kubectl get svc --namespace=haproxy-controller
+curl -I -H 'Host: foo-volumes.bar' 'http://<IP-MASTER>:<PORT-HAPROXY-INGRESS>/volumes'
+
+
+#Dashboard
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+kubectl patch svc kubernetes-dashboard -p '{"spec": {"type": "LoadBalancer"}}' -n=kubernetes-dashboard
+Create User for Dashboard
+kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"
