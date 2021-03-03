@@ -31,6 +31,10 @@ variable "vm_master_config"{
     ip          = string
     cpus        = number
     mem         = number    
+    osDisk    = object({
+      size      = number
+      type  = string
+    })
   }))
   default = [    
     {
@@ -39,6 +43,10 @@ variable "vm_master_config"{
       ip          = "10.0.1.10"
       cpus        = 1
       mem         = 3.5      
+      osDisk      = {
+        size = 40
+        type = "Standard_LRS"
+      }
     }   
   ]
 }
@@ -49,7 +57,11 @@ variable "vm_node_config" {
     name        = string
     ip          = string
     cpus        = number
-    mem         = number    
+    mem         = number
+    osDisk    = object({
+      size      = number
+      type  = string
+    })
   }))
   default = [    
     {
@@ -57,14 +69,22 @@ variable "vm_node_config" {
       name        = "k8s-c8-node01"
       ip          = "10.0.1.11"
       cpus        = 1
-      mem         = 3.5      
+      mem         = 3.5   
+      osDisk      = {
+        size = 40
+        type = "Standard_LRS"
+      }   
     },
     {
       type        = "node"
       name        = "k8s-c8-node02"
       ip          = "10.0.1.12"
       cpus        = 1
-      mem         = 3.5      
+      mem         = 3.5 
+      osDisk      = {
+        size = 40
+        type = "Standard_LRS"
+      }     
     }
   ]
 }
@@ -76,6 +96,10 @@ variable "vm_nfs_config" {
     ip          = string
     cpus        = number
     mem         = number
+    osDisk      = object({
+      size      = number
+      type  = string
+    })
     dataDisk    = object({
       size      = number
       type  = string
@@ -88,6 +112,10 @@ variable "vm_nfs_config" {
       ip          = "10.0.1.15"
       cpus        = 1
       mem         = 3.5
+      osDisk      = {
+        size = 4
+        type = "Standard_LRS"
+      }   
       dataDisk    = {
         size  = 10
         type  = "Standard_LRS"
@@ -102,7 +130,11 @@ variable "vm_configurator_config" {
     name        = string
     ip          = string
     cpus        = number
-    mem         = number    
+    mem         = number
+    osDisk      = object({
+      size      = number
+      type  = string
+    })   
   }))
   default = [
     {
@@ -110,7 +142,11 @@ variable "vm_configurator_config" {
       name        = "configurator-host"
       ip          = "10.0.1.9"
       cpus        = 1
-      mem         = 3.5      
+      mem         = 3.5
+      osDisk      = {
+        size = 4
+        type = "Standard_LRS"
+      }  
     }
   ]
 }
