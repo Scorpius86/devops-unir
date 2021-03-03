@@ -36,16 +36,16 @@
       - "calico.yaml"
       - "metalLB.yaml"
 
-- name: Install SDN (Local Calico)
-  shell: |    
-    kubectl apply -f calico.yaml
+#- name: Install SDN (Local Calico)
+#  shell: |    
+#    kubectl apply -f calico.yaml
 
 #- name: Install SDN (Calico)
 #  shell: |    
 #    kubectl create -f https://docs.projectcalico.org/manifests/tigera-operator.yaml          
 #    wget https://docs.projectcalico.org/manifests/custom-resources.yaml
-#    sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
-#    kubectl apply -f custom-resources.yaml
+#   sed -i '/cidr: 192.168.0.0\/16/c\      cidr: 10.0.0.0\/24' custom-resources.yaml
+#   kubectl apply -f custom-resources.yaml
 
 - name: Install SDN en Azure (Calico)
   shell: |
@@ -74,9 +74,9 @@
     kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
     kubectl apply -f metalLB.yaml
 
-#- name: Deploy Ingress Controller
-#  shell: |
-#    kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
+- name: Deploy Ingress Controller
+  shell: |
+    kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 #    kubectl delete -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml
 
 - name: Create Kubeadmin user
