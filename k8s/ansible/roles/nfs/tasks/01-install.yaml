@@ -58,16 +58,16 @@
 ######################################### Cross ########################################
 - name: Identifying the data disk
   shell: lsblk -r --output NAME,MOUNTPOINT | awk -F \/ '/sd/ { dsk=substr($1,1,3);dsks[dsk]+=1 } END { for ( i in dsks ) { if (dsks[i]==1) print i } }'
-  register: dataDisk
+  register: dataDisk.stdout
 
-- debug: dataDisk
+- debug: msg="{{dataDisk.stdout}}"
 
 - name: Create physical volume
-  shell: "pvcreate /dev/{{dataDisk}}"
+  shell: pvcreate /dev/{{dataDisk.stdout}}
   ignore_errors: yes
 
 - name: Create volume group
-  shell: "vgcreate data_vg /dev/{{dataDisk}}"
+  shell: vgcreate data_vg /dev/{{dataDisk.stdout}}
   ignore_errors: yes
 
 - name: Check volume group
