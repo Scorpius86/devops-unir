@@ -58,7 +58,7 @@
 ######################################### Cross ########################################
 - name: Identifying the data disk
   shell: lsblk -r --output NAME,MOUNTPOINT | awk -F \/ '/sd/ { dsk=substr($1,1,3);dsks[dsk]+=1 } END { for ( i in dsks ) { if (dsks[i]==1) print i } }'
-  register: dataDisk.stdout
+  register: dataDisk
 
 - debug: msg="{{dataDisk.stdout}}"
 
