@@ -31,8 +31,7 @@ resource "azurerm_virtual_machine" "vmConfigurator" {
     storage_os_disk {
         name = "${var.vm_configurator_config[count.index].name}_OSDisk"
         caching = "ReadWrite"
-        create_option = "FromImage"
-        disk_size_gb  = var.vm_configurator_config[count.index].osDisk.size        
+        create_option = "FromImage"        
         #storage_account_type = "Standard_LRS"
     }
 

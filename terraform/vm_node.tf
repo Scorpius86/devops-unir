@@ -32,6 +32,7 @@ resource "azurerm_virtual_machine" "vmNode" {
         caching = "ReadWrite"
         create_option = "FromImage"
         disk_size_gb  = var.vm_node_config[count.index].osDisk.size
+        managed_disk_type = "${var.vm_node_config[count.index].osDisk.type}"
         #storage_account_type = "Standard_LRS"
     }
 

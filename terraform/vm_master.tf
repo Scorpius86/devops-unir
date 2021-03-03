@@ -31,6 +31,7 @@ resource "azurerm_virtual_machine" "vmMaster" {
         name = "${var.vm_master_config[count.index].name}_OSDisk"
         caching = "ReadWrite"
         create_option = "FromImage"
+        managed_disk_type = "${var.vm_master_config[count.index].osDisk.type}"
         disk_size_gb  = var.vm_master_config[count.index].osDisk.size
         #storage_account_type = "Standard_LRS"
     }
