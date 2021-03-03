@@ -6,14 +6,14 @@
   tasks:
     - name: metalLB.yaml
       copy:
-        src: "{{ item }}"
+        src: "roles/master/files/{{ item }}"
         dest: "{{ item }}"
         owner: root
         group: root
         mode: 0644    
       become: yes  
       with_items:          
-          - "roles/master/files/metalLB.yaml"
+          - "metalLB.yaml"
     - name: Labeling nodes
       shell : |
         kubectl label node k8s-c8-node01 node-role.kubernetes.io/worker=worker
