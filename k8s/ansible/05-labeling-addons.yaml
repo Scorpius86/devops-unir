@@ -77,4 +77,5 @@
       fetch:
         src: "/etc/kubernetes/admin.conf"
         dest: "roles/master/files/admin.conf"
+        flat: yes
       
