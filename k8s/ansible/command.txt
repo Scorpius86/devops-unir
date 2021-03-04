@@ -5,7 +5,7 @@ ansible-playbook -l cluster k8s/ansible/02-configure-cluster.yaml
 ansible-playbook -l master k8s/ansible/03-configure-master.yaml
 ansible-playbook -l node k8s/ansible/04-configure-node.yaml
 ansible-playbook -l master k8s/ansible/05-labeling-addons.yaml
-ansible-playbook -l master k8s/ansible/06-Install-App.yaml
+ansible-playbook -l configurator-host k8s/ansible/06-Install-App.yaml
 
 
 

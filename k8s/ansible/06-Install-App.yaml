@@ -12,7 +12,7 @@
         chmod +x ./kubectl
         sudo mv ./kubectl /usr/local/bin/kubectl
 
-    - name: metalLB.yaml
+    - name: admin.conf
       copy:
         src: "roles/master/files/{{ item }}"
         dest: "{{ item }}"
@@ -26,8 +26,8 @@
     - name: Authorize adminUser
       shell: |
         mkdir -p /root/.kube
-        cp -i admin.conf "/home/{{admin_user}}/.kube/config"
-        chown $(id -u):$(id -g) "/home/{{admin_user}}/.kube/config"
+        cp -i admin.conf /home/{{ admin_user }}/.kube/config
+        chown $(id -u):$(id -g) "/home/{{ admin_user }}/.kube/config"
 
     - name: Authorize root
       shell: |
