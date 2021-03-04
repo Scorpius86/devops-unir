@@ -4,65 +4,65 @@
   hosts: master  
   gather_facts: true  
   tasks:
-    - name: metalLB.yaml
-      copy:
-        src: "roles/master/files/{{ item }}"
-        dest: "{{ item }}"
-        owner: root
-        group: root
-        mode: 0644    
-      become: yes  
-      with_items:          
-          - "metalLB.yaml"
+    # - name: metalLB.yaml
+    #   copy:
+    #     src: "roles/master/files/{{ item }}"
+    #     dest: "{{ item }}"
+    #     owner: root
+    #     group: root
+    #     mode: 0644    
+    #   become: yes  
+    #   with_items:          
+    #       - "metalLB.yaml"
 
-    - name: Labeling nodes
-      shell : |
-        kubectl label node k8s-c8-node01 node-role.kubernetes.io/worker=worker
-        kubectl label node k8s-c8-node02 node-role.kubernetes.io/worker=worker
+    # - name: Labeling nodes
+    #   shell : |
+    #     kubectl label node k8s-c8-node01 node-role.kubernetes.io/worker=worker
+    #     kubectl label node k8s-c8-node02 node-role.kubernetes.io/worker=worker
 
-    - name: Install MetalLB
-      shell: |
-        kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
-        kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl apply -f - -n kube-system
-        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
-        kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
-        kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
-        kubectl apply -f metalLB.yaml
+    # - name: Install MetalLB
+    #   shell: |
+    #     kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl diff -f - -n kube-system
+    #     kubectl get configmap kube-proxy -n kube-system -o yaml | sed -e 's/strictARP: false/strictARP: true/' | sed -e 's/mode: ""/mode: "ipvs"/' | sudo kubectl apply -f - -n kube-system
+    #     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/namespace.yaml
+    #     kubectl apply -f https://raw.githubusercontent.com/metallb/metallb/v0.9.5/manifests/metallb.yaml
+    #     kubectl create secret generic -n metallb-system memberlist --from-literal=secretkey="$(openssl rand -base64 128)"
+    #     kubectl apply -f metalLB.yaml
 
-    - name: Deploy Ingress Controller
-      shell: |
-        kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml        
-        kubectl patch svc haproxy-ingress -p '{"spec": {"type": "LoadBalancer"}}' -n=haproxy-controller
+    # - name: Deploy Ingress Controller
+    #   shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/haproxytech/kubernetes-ingress/v1.5/deploy/haproxy-ingress.yaml        
+    #     kubectl patch svc haproxy-ingress -p '{"spec": {"type": "LoadBalancer"}}' -n=haproxy-controller
 
-    - name: Deploy Dashboard
-      shell: |
-        kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
-        kubectl patch svc kubernetes-dashboard -p '{"spec": {"type": "LoadBalancer"}}' -n=kubernetes-dashboard
+    # - name: Deploy Dashboard
+    #   shell: |
+    #     kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
+    #     kubectl patch svc kubernetes-dashboard -p '{"spec": {"type": "LoadBalancer"}}' -n=kubernetes-dashboard
     
-    - name: Create user for Dashboard
-      shell: |
-        cat <<EOF | kubectl apply -f -
-        apiVersion: v1
-        kind: ServiceAccount
-        metadata:
-          name: admin-user
-          namespace: kubernetes-dashboard
-        EOF
-        cat <<EOF | kubectl apply -f -
-        apiVersion: rbac.authorization.k8s.io/v1
-        kind: ClusterRoleBinding
-        metadata:
-          name: admin-user
-        roleRef:
-          apiGroup: rbac.authorization.k8s.io
-          kind: ClusterRole
-          name: cluster-admin
-        subjects:
-        - kind: ServiceAccount
-          name: admin-user
-          namespace: kubernetes-dashboard
-        EOF
-
+    # - name: Create user for Dashboard
+    #   shell: |
+    #     cat <<EOF | kubectl apply -f -
+    #     apiVersion: v1
+    #     kind: ServiceAccount
+    #     metadata:
+    #       name: admin-user
+    #       namespace: kubernetes-dashboard
+    #     EOF
+    #     cat <<EOF | kubectl apply -f -
+    #     apiVersion: rbac.authorization.k8s.io/v1
+    #     kind: ClusterRoleBinding
+    #     metadata:
+    #       name: admin-user
+    #     roleRef:
+    #       apiGroup: rbac.authorization.k8s.io
+    #       kind: ClusterRole
+    #       name: cluster-admin
+    #     subjects:
+    #     - kind: ServiceAccount
+    #       name: admin-user
+    #       namespace: kubernetes-dashboard
+    #     EOF
+    
     - name: Create token for Dashboard
       shell: 'kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{.data.token | base64decode}}"'
       register: kube_token_cmd
