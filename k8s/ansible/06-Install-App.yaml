@@ -25,7 +25,7 @@
     
     - name: Authorize adminUser
       shell: |
-        mkdir -p /root/.kube
+        mkdir -p /home/{{ admin_user }}/.kube
         cp -i admin.conf /home/{{ admin_user }}/.kube/config
         chown $(id -u):$(id -g) "/home/{{ admin_user }}/.kube/config"
 
