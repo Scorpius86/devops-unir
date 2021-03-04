@@ -8,7 +8,7 @@ resource "azurerm_virtual_network" "myNet" {
   resource_group_name = azurerm_resource_group.rg.name
 
   tags = {
-    environment = "CP2"
+    environment = "UNIR"
   }
 }
 
@@ -41,7 +41,7 @@ resource "azurerm_network_interface" "myNic" {
   }
 
   tags = {
-    environment = "CP2"
+    environment = "UNIR"
   }
 
 }
@@ -58,7 +58,6 @@ resource "azurerm_public_ip" "myPublicIp" {
 	domain_name_label             = "vmip-${local.vm_config[count.index].name}-publicip"
   sku                           = "Basic"
   tags = {
-    environment = "CP2"
+    environment = "UNIR"
   }
-
 }

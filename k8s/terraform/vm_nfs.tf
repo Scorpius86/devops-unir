@@ -104,7 +104,7 @@ resource "azurerm_virtual_machine" "vmNFS" {
     }
 
     tags = {
-        environment = "CP2"
+        environment = "UNIR"
     }
 
 }

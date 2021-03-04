@@ -96,7 +96,7 @@ resource "azurerm_virtual_machine" "vmMaster" {
     }    
 
     tags = {
-        environment = "CP2"
+        environment = "UNIR"
     }
 
 }

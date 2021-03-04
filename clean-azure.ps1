@@ -1,0 +1,1 @@
+az group delete -n kubernetes_rg -y

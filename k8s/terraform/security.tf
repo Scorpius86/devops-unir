@@ -31,7 +31,7 @@ resource "azurerm_network_security_group" "mySecGroup" {
   }
 
   tags = {
-    environment = "CP2"
+    environment = "UNIR"
   }
 }
 
