@@ -38,7 +38,7 @@
     #   shell: |
     #     kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.0.0/aio/deploy/recommended.yaml
     #     kubectl patch svc kubernetes-dashboard -p '{"spec": {"type": "LoadBalancer"}}' -n=kubernetes-dashboard
-    
+  
     # - name: Create user for Dashboard
     #   shell: |
     #     cat <<EOF | kubectl apply -f -
@@ -63,12 +63,18 @@
     #       namespace: kubernetes-dashboard
     #     EOF
 
-    - name: Create token for Dashboard
-      shell: kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{ '{{' }}.data.token | base64decode{{ '}}' }}"
-      register: kube_token_cmd
+    # - name: Create token for Dashboard
+    #   shell: kubectl -n kubernetes-dashboard get secret $(kubectl -n kubernetes-dashboard get sa/admin-user -o jsonpath="{.secrets[0].name}") -o go-template="{{ '{{' }}.data.token | base64decode{{ '}}' }}"
+    #   register: kube_token_cmd
 
     - name: copy the output kube_token_cmd to a local file
       copy:
         content: "{{ kube_token_cmd.stdout }}"
         dest: "roles/master/files/kube_token_cmd.txt"
+      delegate_to: localhost
+
+    - name: copy the admin.conf to a local file
+      copy:
+        src: "/etc/kubernetes/admin.conf"
+        dest: "roles/master/files/admin.conf"
       delegate_to: localhost
