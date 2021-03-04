@@ -11,9 +11,32 @@
         curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
         chmod +x ./kubectl
         sudo mv ./kubectl /usr/local/bin/kubectl
+
+    - name: metalLB.yaml
+      copy:
+        src: "roles/master/files/{{ item }}"
+        dest: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0644    
+      become: yes  
+      with_items:          
+        - "admin.conf"
     
     - name: Authorize adminUser
       shell: |
         mkdir -p /root/.kube
-        cp -i /etc/kubernetes/admin.conf /home/{{admin_user}}/.kube/config
+        cp -i admin.conf /home/{{admin_user}}/.kube/config
         chown $(id -u):$(id -g) /home/{{admin_user}}/.kube/config
+
+    - name: Authorize root
+      shell: |
+        mkdir -p /root/.kube
+        cp -i admin.conf /root/.kube/config
+        chown $(id -u):$(id -g) /root/.kube/config
+
+    - name: Clone source
+      shell: | 
+        git clone https://github.com/jadebustos/docker-2048
+        cd docker-2048
+
