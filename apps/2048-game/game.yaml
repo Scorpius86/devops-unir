@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: game
-        image: quay.io/rhte_2019/2048-game:latest
+        image: alexwhen/docker-2048:latest
         ports:
         - containerPort: 80
         readinessProbe:

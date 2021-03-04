@@ -12,7 +12,7 @@
         chmod +x ./kubectl
         sudo mv ./kubectl /usr/local/bin/kubectl
 
-    - name: admin.conf
+    - name: Copy admin.conf
       copy:
         src: "roles/master/files/{{ item }}"
         dest: "{{ item }}"
@@ -22,6 +22,17 @@
       become: yes  
       with_items:          
         - "admin.conf"
+    
+    - name: Copy game.yaml
+      copy:
+        src: "../../apps/2048-game/{{ item }}"
+        dest: "{{ item }}"
+        owner: root
+        group: root
+        mode: 0644    
+      become: yes  
+      with_items:          
+        - "game.yaml"
     
     - name: Authorize adminUser
       shell: |
@@ -35,8 +46,12 @@
         cp -i admin.conf /root/.kube/config
         chown $(id -u):$(id -g) /root/.kube/config
 
-    - name: Clone source
-      shell: | 
-        git clone https://github.com/jadebustos/docker-2048
-        cd docker-2048
+    - name: Deploy Game
+      shell: |
+        kubectl create namespace game
+        kubectl apply -f game.yaml
+
+        
+        
+      
 
