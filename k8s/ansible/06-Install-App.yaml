@@ -1,0 +1,19 @@
+---
+
+- name: Install App
+  hosts: configurator-host
+  vars_files:
+    - "group_vars/global.yaml"
+  gather_facts: true  
+  tasks:
+    - name: Install client - configurator-host
+      shell: |    
+        curl -LO "https://storage.googleapis.com/kubernetes-release/release/$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl"
+        chmod +x ./kubectl
+        sudo mv ./kubectl /usr/local/bin/kubectl
+    
+    - name: Authorize adminUser
+      shell: |
+        mkdir -p /root/.kube
+        cp -i /etc/kubernetes/admin.conf /home/{{admin_user}}/.kube/config
+        chown $(id -u):$(id -g) /home/{{admin_user}}/.kube/config
