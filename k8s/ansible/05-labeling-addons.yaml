@@ -74,7 +74,7 @@
     #   delegate_to: localhost
 
     - name: copy the admin.conf to a local file
-      copy:
+      fetch:
         src: "/etc/kubernetes/admin.conf"
         dest: "roles/master/files/admin.conf"
       
